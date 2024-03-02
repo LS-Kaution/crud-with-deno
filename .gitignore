@@ -1,0 +1,5 @@
+#VSConfiguration
+.vscode
+
+# Enviroment
+.env
