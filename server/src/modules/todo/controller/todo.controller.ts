@@ -1,6 +1,13 @@
+import { Context } from "https://deno.land/x/oak/mod.ts";
 import todoService from "../service/todo.service.ts";
 
-async function create(context: any) {
+type TodoContext = Context & {
+    params: {
+        id: string
+    }
+}
+
+async function create(context: Context) {
     await todoService.create(context);
 
     context.response.status = 201;
@@ -12,7 +19,7 @@ async function create(context: any) {
     };
 }
 
-async function findAll(context: any) {
+async function findAll(context: Context) {
     context.response.status = 200;
     context.response.body = {
         meta: {
@@ -23,18 +30,18 @@ async function findAll(context: any) {
     };
 }
 
-async function findById(context: any) {
+async function findById(context: TodoContext) {
     context.response.status = 200;
     context.response.body = {
         meta: {
             code: 200,
             status: "Ok",
         },
-        data: await todoService.findById(context.params.id)
+        data: await todoService.findById(parseInt(context.params.id))
     };
 }
 
-async function update(context: any) {
+async function update(context: Context) {
     await todoService.update(context);
 
     context.response.status = 200;
@@ -46,8 +53,8 @@ async function update(context: any) {
     };
 }
 
-async function eliminate(context: any) {
-    await todoService.eliminate(context.params.id);
+async function eliminate(context: TodoContext) {
+    await todoService.eliminate(parseInt(context.params.id));
 
     context.response.status = 200;
     context.response.body = {
