@@ -5,26 +5,29 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogClose,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "./textarea";
+import { Textarea } from "./ui/textarea";
 import { ChangeEvent, useEffect, useState } from "react";
 
 type ModalProps = {
-  ButtonName: string;
-  ModalTitle: string;
-  ModalDescription?: string;
+  HandleAddTodo: (title: string, description: string) => void
+  ButtonName: string
+  ModalTitle: string
+  ModalDescription?: string
   TaskTitle: string
   TaskDescription: string
   ButtonCreate: string
 };
 
-export function Modal({ButtonName, ModalTitle, ModalDescription, TaskTitle, TaskDescription, ButtonCreate}: ModalProps) {
+export function Modal({HandleAddTodo, ButtonName, ModalTitle, ModalDescription, TaskTitle, TaskDescription, ButtonCreate}: ModalProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true)
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const value = event.target.value
@@ -37,6 +40,16 @@ export function Modal({ButtonName, ModalTitle, ModalDescription, TaskTitle, Task
 
     setDescription(value)
   }
+
+  function handleOnClick(){
+    HandleAddTodo(title, description)
+    setTitle("")
+    setDescription("")
+  }
+
+  useEffect(() => {
+    setIsDisabled(title === "" ? true  : false)
+  }, [title])  
 
   useEffect(() => {
     console.log(title, description)
@@ -57,7 +70,7 @@ export function Modal({ButtonName, ModalTitle, ModalDescription, TaskTitle, Task
             <Label htmlFor="taskTitle" className="text-center">
               {TaskTitle}
             </Label>
-            <Input name="taskTitle" placeholder="Call mom saturday" required={true} className="col-span-3" onChange={handleInputChange} />
+            <Input name="taskTitle" placeholder="Call mom saturday" className="col-span-3" onChange={handleInputChange} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="taskDescription" className="text-center">
@@ -67,7 +80,9 @@ export function Modal({ButtonName, ModalTitle, ModalDescription, TaskTitle, Task
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">{ButtonCreate}</Button>
+          <DialogClose asChild>
+            <Button type="submit" disabled={isDisabled} onClick={handleOnClick}>{ButtonCreate}</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
