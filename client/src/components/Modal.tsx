@@ -15,7 +15,7 @@ import { Textarea } from "./ui/textarea";
 import { ChangeEvent, useEffect, useState } from "react";
 
 type ModalProps = {
-  HandleAddTodo: (title: string, description: string) => void
+  HandleAddTodo: (title: string, description: string, id: string) => void
   ButtonName: string
   ModalTitle: string
   ModalDescription?: string
@@ -42,7 +42,7 @@ export function Modal({HandleAddTodo, ButtonName, ModalTitle, ModalDescription, 
   }
 
   function handleOnClick(){
-    HandleAddTodo(title, description)
+    HandleAddTodo(title, description, crypto.randomUUID())
     setTitle("")
     setDescription("")
   }
@@ -50,10 +50,6 @@ export function Modal({HandleAddTodo, ButtonName, ModalTitle, ModalDescription, 
   useEffect(() => {
     setIsDisabled(title === "" ? true  : false)
   }, [title])  
-
-  useEffect(() => {
-    console.log(title, description)
-  }, [title, description])
   
   return (
     <Dialog>

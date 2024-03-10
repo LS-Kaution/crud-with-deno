@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 type Props = {
-  HandleAddTodo: (title: string, description: string) => void
+  HandleAddTodo: (title: string, description: string, id: string) => void
 }
 
 export default function Header({HandleAddTodo}: Props) {

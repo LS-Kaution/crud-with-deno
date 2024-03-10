@@ -17,9 +17,11 @@ import SaveIcon from "./ui/icons/SaveIcon";
 type Props = {
   title: string;
   description: string;
+  id: string
+  handleDeleteTodo: () => void
 };
 
-export default function CardContainer({ title, description }: Props) {
+export default function CardContainer({ title, description, handleDeleteTodo }: Props) {
   const [buttonTitle, SetButtonTitle] = useState(false)
   const [updateTitle, SetUpdateTitle] = useState(title)
   const [buttonDescription, SetButtonDescription] = useState(false)
@@ -99,7 +101,7 @@ export default function CardContainer({ title, description }: Props) {
       </CardContent>
       <CardFooter className="flex justify-between">
         <StatusCheck />
-        <Button variant="destructive">Delete task</Button>
+        <Button variant="destructive" onClick={handleDeleteTodo}>Delete task</Button>
       </CardFooter>
     </Card>
   );
